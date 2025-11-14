@@ -77,7 +77,11 @@ const bountyImg = foundry.applications.fields.createFormGroup({
 
 
 
-let statProse= foundry.applications.elements.HTMLProseMirrorElement.create({name:"system.flags.bounty.stats",toggled: true,value: app.object.system.flags?.bounty.stats ?? "", enriched:app.object.system.flags?.bounty.stats ?? ""});
+let statProse= foundry.applications.elements.HTMLProseMirrorElement.create({name:"system.flags.bounty.stats",toggled: true,value: app.object.system.flags?.bounty.stats ?? `<p><strong>Client:</strong> </p>
+<p><strong>Target:</strong> <br><strong>Last Known Location:</strong> </p>
+<p><strong>Wanted For:</strong> <br><strong>Objective:</strong> </p>`, enriched:app.object.system.flags?.bounty.stats ?? `<p><strong>Client:</strong> </p>
+<p><strong>Target:</strong> <br><strong>Last Known Location:</strong> </p>
+<p><strong>Wanted For:</strong> <br><strong>Objective:</strong> </p>`});
 let detailsProse= foundry.applications.elements.HTMLProseMirrorElement.create({name:"system.flags.bounty.details",toggled: true,value: app.object.system.flags?.bounty.details ?? "", enriched:app.object.system.flags?.bounty.details ?? ""});
 
 
