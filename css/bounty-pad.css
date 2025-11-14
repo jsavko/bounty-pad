@@ -32,6 +32,7 @@
   width: 200px;
   margin-top: 45px; 
   height: 170px;
+  color: #6dc5f7;
 }
 
 .bounty-pad .actor { 
@@ -46,5 +47,5 @@
   display:block;
   margin-left:5px;
   width:370px;
-
+  color: #6dc5f7;
 }
