@@ -2,8 +2,6 @@
 Hooks.once("init", async function () {
     console.log('DataPad init - Registrering Socket')
     game.socket.on("module.bounty-pad", (data) => {
-        console.log(data)
-        console.log('emmit recieved')
         displayBountyPad(data);
     })
 
@@ -84,7 +82,6 @@ Hooks.on('getActorContextOptions', (html, options)=>{
             ui.notifications.warn(game.i18n.localize("bountyPad.ErrorToken"));
             return;
         }
-        console.log(options)
         await game.socket.emit("module.bounty-pad", options);
         //display for yourself
         displayBountyPad(options);
