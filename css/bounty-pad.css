@@ -47,7 +47,6 @@
 .bounty-pad .actor img{ 
     opacity: 0.5;
     filter: hue-rotate(167deg);
-    clip-path: circle();
 }
 
 .bounty-pad .details { 
