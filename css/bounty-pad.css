@@ -1,0 +1,50 @@
+.bounty-pad .data-pad {
+  background-image: url("../media/datapad.v10.black.png");
+  background-size: 450px;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: 0px;
+  height: 640px;
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap to the next line */
+}
+
+.bounty-pad .top {
+  display: flex;
+  flex-wrap: wrap; /* Allow items to wrap to the next line */
+  height: 200px;
+  width:auto;
+  margin-top: 30px;
+  margin-left: 20px;
+}
+.bounty-pad .bottom {
+    display: flex;
+    flex-wrap: wrap;
+    height: 300px;
+    width: auto;
+    margin-left: 20px;
+    position: relative;
+    top: -20px;
+}
+
+.bounty-pad .summary { 
+  display: block;
+  width: 200px;
+  margin-top: 45px; 
+  height: 170px;
+}
+
+.bounty-pad .actor { 
+  display: block;
+  height: 150px;
+  width: 150px;
+  margin-top: 35px;
+  margin-left: 20px;
+}
+
+.bounty-pad .details { 
+  display:block;
+  margin-left:5px;
+  width:370px;
+
+}
