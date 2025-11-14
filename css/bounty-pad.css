@@ -15,7 +15,7 @@
   height: 200px;
   width:auto;
   margin-top: 30px;
-  margin-left: 20px;
+  margin-left: 30px;
 }
 .bounty-pad .bottom {
     display: flex;
@@ -41,7 +41,7 @@
   height: 150px;
   width: 150px;
   margin-top: 35px;
-  margin-left: 20px;
+  margin-left: 15px;
 }
 
 .bounty-pad .actor img{ 
@@ -51,7 +51,7 @@
 
 .bounty-pad .details { 
   display:block;
-  margin-left:5px;
+  margin-left:10px;
   width:370px;
   color: #6dc5f7;
   font-family: "Digital Disco";

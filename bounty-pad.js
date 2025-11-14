@@ -66,11 +66,17 @@ Hooks.on("renderActorSheet", (app, [html], data) => {
     `<a class="fatex-tabs-navigation__item"... data-tab="bounty">Bounty Data</a>`
   );
 
-let bountyImg = foundry.applications.elements.HTMLFilePickerElement.create({
+const bountyImg = foundry.applications.fields.createFormGroup({
+  label: "Image Path",
+  input: foundry.applications.elements.HTMLFilePickerElement.create({
     name: "system.flags.bounty.img",
     type: "image",
-    value: app.object.system.flags?.bounty.img
+    value: app.object.system.flags?.bounty.img,
   })
+}).outerHTML;
+
+
+
 let statProse= foundry.applications.elements.HTMLProseMirrorElement.create({name:"system.flags.bounty.stats",toggled: true,value: app.object.system.flags?.bounty.stats, enriched:app.object.system.flags?.bounty.stats});
 let detailsProse= foundry.applications.elements.HTMLProseMirrorElement.create({name:"system.flags.bounty.details",toggled: true,value: app.object.system.flags?.bounty.details, enriched:app.object.system.flags?.bounty.details});
 
@@ -78,7 +84,7 @@ let bountyImg2 = `<img class="fatex-artwork__image" alt="${app.object.name}" dat
 
   body.insertAdjacentHTML('beforeend', `
     <div data-tab="bounty" class="fatex-tab-content fatex-tab-content--bounty tab">
-       <h2>Bounty Image</h2><div>${bountyImg.outerHTML}</div>
+       <h2>Bounty Image</h2><div>${bountyImg}</div>
        <h2>Bounty Stats</h2><div> ${statProse.outerHTML}</div>
        <h2>Bounty Details</h2> <div>${detailsProse.outerHTML}</div>
     </div>
@@ -161,7 +167,7 @@ class bountyPadOverlay extends HandlebarsApplicationMixin(ApplicationV2) {
 
   static DEFAULT_OPTIONS = {
     classes: ['sheet', 'bounty-pad'],
-    position: { width: 450, height: 690 },
+    position: { width: 475, height: 690 },
     tag: 'form',  // REQUIRED for dialogs and forms
     window: {
       resizable: false,
