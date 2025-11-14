@@ -71,16 +71,15 @@ const bountyImg = foundry.applications.fields.createFormGroup({
   input: foundry.applications.elements.HTMLFilePickerElement.create({
     name: "system.flags.bounty.img",
     type: "image",
-    value: app.object.system.flags?.bounty.img,
+    value: app.object.system.flags?.bounty.img ?? "",
   })
 }).outerHTML;
 
 
 
-let statProse= foundry.applications.elements.HTMLProseMirrorElement.create({name:"system.flags.bounty.stats",toggled: true,value: app.object.system.flags?.bounty.stats, enriched:app.object.system.flags?.bounty.stats});
-let detailsProse= foundry.applications.elements.HTMLProseMirrorElement.create({name:"system.flags.bounty.details",toggled: true,value: app.object.system.flags?.bounty.details, enriched:app.object.system.flags?.bounty.details});
+let statProse= foundry.applications.elements.HTMLProseMirrorElement.create({name:"system.flags.bounty.stats",toggled: true,value: app.object.system.flags?.bounty.stats ?? "", enriched:app.object.system.flags?.bounty.stats ?? ""});
+let detailsProse= foundry.applications.elements.HTMLProseMirrorElement.create({name:"system.flags.bounty.details",toggled: true,value: app.object.system.flags?.bounty.details ?? "", enriched:app.object.system.flags?.bounty.details ?? ""});
 
-let bountyImg2 = `<img class="fatex-artwork__image" alt="${app.object.name}" data-edit="system.flags.bounty.img" src="${app.object.system.flags.bounty.img}" title="${app.object.name}" />`
 
   body.insertAdjacentHTML('beforeend', `
     <div data-tab="bounty" class="fatex-tab-content fatex-tab-content--bounty tab">
@@ -136,30 +135,6 @@ function displayBountyPad(options={}) {
     }, 10)
 
     
-}
-
-
-function getSection(headerText, html) {
-    const temp = document.createElement("div");
-    temp.innerHTML = html;
-    const headers = temp.querySelectorAll("h2");
-
-    for (let i = 0; i < headers.length; i++) {
-        if (headers[i].textContent.trim() === headerText) {
-        let parts = [];
-        let node = headers[i].nextElementSibling;
-
-        // Collect siblings until next H2
-        while (node && node.tagName !== "H2") {
-            parts.push(node.outerHTML);
-            node = node.nextElementSibling;
-        }
-
-        return parts.join("").trim();
-        }
-    }
-
-    return "";
 }
     
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
