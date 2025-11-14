@@ -43,6 +43,11 @@
   margin-left: 20px;
 }
 
+.bounty-pad .actor img{ 
+    opacity: 0.5;
+    filter: hue-rotate(167deg);
+}
+
 .bounty-pad .details { 
   display:block;
   margin-left:5px;
