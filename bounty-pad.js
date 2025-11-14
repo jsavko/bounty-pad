@@ -60,16 +60,13 @@ Hooks.on("renderActorSheet", (app, [html], data) => {
 
   const nav = html.querySelector(".fatex-tabs-navigation"); //chekc this selector
   const body = html.querySelector(".fatex-js-tab-content"); //check this selector 
-  console.log(html);
   if(!nav || !body) return;
-
-  console.log('found tabs')
   
   nav.insertAdjacentHTML('beforeend',
     `<a class="fatex-tabs-navigation__item"... data-tab="bounty">Bounty Data</a>`
   );
 
-let bountryImg = foundry.applications.elements.HTMLFilePickerElement.create({
+let bountyImg = foundry.applications.elements.HTMLFilePickerElement.create({
     name: "system.flags.bounty.img",
     type: "image",
     value: app.object.system.flags?.bounty.img
@@ -77,9 +74,11 @@ let bountryImg = foundry.applications.elements.HTMLFilePickerElement.create({
 let statProse= foundry.applications.elements.HTMLProseMirrorElement.create({name:"system.flags.bounty.stats",toggled: true,value: app.object.system.flags?.bounty.stats, enriched:app.object.system.flags?.bounty.stats});
 let detailsProse= foundry.applications.elements.HTMLProseMirrorElement.create({name:"system.flags.bounty.details",toggled: true,value: app.object.system.flags?.bounty.details, enriched:app.object.system.flags?.bounty.details});
 
+let bountyImg2 = `<img class="fatex-artwork__image" alt="${app.object.name}" data-edit="system.flags.bounty.img" src="${app.object.system.flags.bounty.img}" title="${app.object.name}" />`
+
   body.insertAdjacentHTML('beforeend', `
     <div data-tab="bounty" class="fatex-tab-content fatex-tab-content--bounty tab">
-       <h2>Bounty Image</h2><div>${bountryImg.outerHTML}</div>
+       <h2>Bounty Image</h2><div>${bountyImg.outerHTML}</div>
        <h2>Bounty Stats</h2><div> ${statProse.outerHTML}</div>
        <h2>Bounty Details</h2> <div>${detailsProse.outerHTML}</div>
     </div>
