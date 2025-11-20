@@ -53,16 +53,24 @@ Hooks.on('getActorContextOptions', (html, options)=>{
     }
 });
 
-Hooks.on("renderActorSheet", (app, [html], data) => {       
-    
-  if ( game.user.role <= game.settings.get("bounty-pad", "permissions-emit")) return 
 
+Hooks.on("ready",  () => {
+game.bountyPad = {tab:false}
+});
+
+Hooks.on("renderActorSheet", (app, [html], data) => {       
+  if ( game.user.role <= game.settings.get("bounty-pad", "permissions-emit")) return 
 
   const randID =foundry.utils.randomID(5);
   const nav = html.querySelector(".fatex-tabs-navigation"); //chekc this selector
   const body = html.querySelector(".fatex-js-tab-content"); //check this selector 
   if(!nav || !body) return;
   
+  //Check if I already added the tab
+  if (html.querySelector('div.bounty')) {
+    console.log('already added')
+  }
+
   nav.insertAdjacentHTML('beforeend',
     `<a class="fatex-tabs-navigation__item"... data-tab="bounty">Bounty Data</a>`
   );
@@ -77,7 +85,7 @@ const bountyImg = foundry.applications.fields.createFormGroup({
 }).outerHTML;
 
 const HueRotate = foundry.applications.fields.createFormGroup({
-    label: "Slider Label",
+    label: "Image Hue",
     input: foundry.applications.elements.HTMLRangePickerElement.create({
         name: "system.flags.bounty.hue",
         min: 1,
@@ -119,8 +127,37 @@ let detailsBlock = `<h2>Bounty Details</h2> <div>${detailsProse.outerHTML}</div>
   slider?.addEventListener('input', ev => {
     const val = ev.target.value;
     const img = body.querySelector('img.bounty_preview-' +randID);
-     img.style.filter = `hue-rotate(${val}deg)`;
+     img.style.filter = `hue-rotate(${val}deg)`; 
   });
+
+
+  html.addEventListener('click', (ev) => {
+  const tab = ev.target.closest('.fatex-tabs-navigation__item');
+  if (!tab) return; 
+  if (tab.dataset.tab === 'bounty') {
+    game.bountyPad.tab = true;
+  } else {
+    game.bountyPad.tab = false;
+  }
+});
+
+
+      if (game.bountyPad.tab ) {
+        const tabButton = html.querySelector('[data-tab="bounty"]');
+        const tabContent = html.querySelector('.fatex-tab-content--bounty');
+
+        if (tabButton && tabContent) {
+          html.querySelectorAll('.fatex-tabs-navigation__item.active:not([data-tab="bounty"])')
+            .forEach(btn => btn.classList.remove('active'));
+          html.querySelectorAll('.fatex-tab-content.active:not(.fatex-tab-content--bounty)')
+            .forEach(content => content.classList.remove('active'));
+
+          tabButton.classList.add('active');
+          tabContent.classList.add('active');
+        }
+        app._tabs[0].active="bounty";
+      } 
+  
 
 });
 
