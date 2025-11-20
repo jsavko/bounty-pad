@@ -9,7 +9,8 @@ Hooks.once("init", async function () {
         displayPad: displayPad,
         emiteBoss: displayPad,
         BountyPad: bountyPadOverlay,
-        currentOverlay: null
+        currentOverlay: null,
+        tab: false
 }
 
     //Register settings
@@ -54,11 +55,7 @@ Hooks.on('getActorContextOptions', (html, options)=>{
 });
 
 
-Hooks.on("ready",  () => {
-game.bountyPad = {tab:false}
-});
-
-Hooks.on("renderActorSheet", (app, [html], data) => {       
+Hooks.on("renderActorSheet", (app, [html], data) => {
   if ( game.user.role <= game.settings.get("bounty-pad", "permissions-emit")) return 
 
   const randID =foundry.utils.randomID(5);
@@ -66,11 +63,7 @@ Hooks.on("renderActorSheet", (app, [html], data) => {
   const body = html.querySelector(".fatex-js-tab-content"); //check this selector 
   if(!nav || !body) return;
   
-  //Check if I already added the tab
-  if (html.querySelector('div.bounty')) {
-    console.log('already added')
-  }
-
+ 
   nav.insertAdjacentHTML('beforeend',
     `<a class="fatex-tabs-navigation__item"... data-tab="bounty">Bounty Data</a>`
   );
@@ -143,6 +136,7 @@ let detailsBlock = `<h2>Bounty Details</h2> <div>${detailsProse.outerHTML}</div>
 
 
       if (game.bountyPad.tab ) {
+        app.options.tabs[0].initial = "bounty"
         const tabButton = html.querySelector('[data-tab="bounty"]');
         const tabContent = html.querySelector('.fatex-tab-content--bounty');
 
