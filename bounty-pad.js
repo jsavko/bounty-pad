@@ -77,7 +77,7 @@ const bountyImg = foundry.applications.fields.createFormGroup({
   })
 }).outerHTML;
 
-const HueRotate = foundry.applications.fields.createFormGroup({
+const hueRotate = foundry.applications.fields.createFormGroup({
     label: "Image Hue",
     input: foundry.applications.elements.HTMLRangePickerElement.create({
         name: "system.flags.bounty.hue",
@@ -89,24 +89,20 @@ const HueRotate = foundry.applications.fields.createFormGroup({
 }).outerHTML;
 
 
-
-
-let statProse= foundry.applications.elements.HTMLProseMirrorElement.create({name:"system.flags.bounty.stats",toggled: true,value: app.object.system.flags?.bounty.stats ?? `<p><strong>Client:</strong> </p>
+const defaultValue = `<p><strong>Client:</strong> </p>
 <p><strong>Target:</strong> <br><strong>Last Known Location:</strong> </p>
-<p><strong>Wanted For:</strong> <br><strong>Objective:</strong> </p>`, enriched:app.object.system.flags?.bounty.stats ?? `<p><strong>Client:</strong> </p>
-<p><strong>Target:</strong> <br><strong>Last Known Location:</strong> </p>
-<p><strong>Wanted For:</strong> <br><strong>Objective:</strong> </p>`});
+<p><strong>Wanted For:</strong> <br><strong>Objective:</strong> </p>`;
+
+let statProse= foundry.applications.elements.HTMLProseMirrorElement.create({name:"system.flags.bounty.stats",toggled: true,value: app.object.system.flags?.bounty.stats ?? defaultValue, enriched:app.object.system.flags?.bounty.stats ?? defaultValue });
 let detailsProse= foundry.applications.elements.HTMLProseMirrorElement.create({name:"system.flags.bounty.details",toggled: true,value: app.object.system.flags?.bounty.details ?? "", enriched:app.object.system.flags?.bounty.details ?? ""});
 let imgPreview = app.object.system.flags?.bounty.img ?? "icons/svg/mystery-man.svg";
 
-let imgBlock = `<h2>Bounty Image</h2><div>${bountyImg}
-<br>
-${HueRotate}
+const imgBlock = `<h2>Bounty Image</h2><div>${bountyImg}<br>${hueRotate}
 <br>
 <img src="${imgPreview}" class="bounty_preview-${randID}" style="filter: hue-rotate(${app.object.system.flags?.bounty.hue}deg)" height="100">
 </div>`;
-let statBlock = `<h2>Bounty Stats</h2><div> ${statProse.outerHTML}</div>`;
-let detailsBlock = `<h2>Bounty Details</h2> <div>${detailsProse.outerHTML}</div>`;
+const statBlock = `<h2>Bounty Stats</h2><div> ${statProse.outerHTML}</div>`;
+const detailsBlock = `<h2>Bounty Details</h2> <div>${detailsProse.outerHTML}</div>`;
 
   body.insertAdjacentHTML('beforeend', `
     <div data-tab="bounty" class="fatex-tab-content fatex-tab-content--bounty tab">
@@ -120,43 +116,42 @@ let detailsBlock = `<h2>Bounty Details</h2> <div>${detailsProse.outerHTML}</div>
   slider?.addEventListener('input', ev => {
     const val = ev.target.value;
     const img = body.querySelector('img.bounty_preview-' +randID);
-     img.style.filter = `hue-rotate(${val}deg)`; 
+    img.style.filter = `hue-rotate(${val}deg)`; 
   });
 
 
   html.addEventListener('click', (ev) => {
-  const tab = ev.target.closest('.fatex-tabs-navigation__item');
-  if (!tab) return; 
-  if (tab.dataset.tab === 'bounty') {
-    game.bountyPad.tab = true;
-  } else {
-    game.bountyPad.tab = false;
-  }
-});
+    const tab = ev.target.closest('.fatex-tabs-navigation__item');
+    if (!tab) return; 
+    if (tab.dataset.tab === 'bounty') {
+      game.bountyPad.tab = true;
+    } else {
+      game.bountyPad.tab = false;
+    }
+  });
 
 
-      if (game.bountyPad.tab ) {
-        app.options.tabs[0].initial = "bounty"
-        const tabButton = html.querySelector('[data-tab="bounty"]');
-        const tabContent = html.querySelector('.fatex-tab-content--bounty');
+  if (game.bountyPad.tab ) {
+    app.options.tabs[0].initial = "bounty"
+    const tabButton = html.querySelector('[data-tab="bounty"]');
+    const tabContent = html.querySelector('.fatex-tab-content--bounty');
 
-        if (tabButton && tabContent) {
-          html.querySelectorAll('.fatex-tabs-navigation__item.active:not([data-tab="bounty"])')
-            .forEach(btn => btn.classList.remove('active'));
-          html.querySelectorAll('.fatex-tab-content.active:not(.fatex-tab-content--bounty)')
-            .forEach(content => content.classList.remove('active'));
+    if (tabButton && tabContent) {
+      html.querySelectorAll('.fatex-tabs-navigation__item.active:not([data-tab="bounty"])')
+        .forEach(btn => btn.classList.remove('active'));
+      html.querySelectorAll('.fatex-tab-content.active:not(.fatex-tab-content--bounty)')
+        .forEach(content => content.classList.remove('active'));
 
-          tabButton.classList.add('active');
-          tabContent.classList.add('active');
-        }
-        app._tabs[0].active="bounty";
-      } 
+      tabButton.classList.add('active');
+      tabContent.classList.add('active');
+    }
+    app._tabs[0].active="bounty";
+  } 
   
 
 });
 
     async function displayPad(options={}) {
-        //if (!game.user.isGM) {
 
         if ( game.user.role <= game.settings.get("bounty-pad", "permissions-emit")) { 
             ui.notifications.warn(game.i18n.localize("bountyPad.ErrorGM"));
