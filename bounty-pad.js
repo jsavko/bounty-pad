@@ -55,9 +55,10 @@ Hooks.on('getActorContextOptions', (html, options)=>{
 
 Hooks.on("renderActorSheet", (app, [html], data) => {       
     
-    if ( game.user.role <= game.settings.get("bounty-pad", "permissions-emit")) return 
+  if ( game.user.role <= game.settings.get("bounty-pad", "permissions-emit")) return 
 
 
+  const randID =foundry.utils.randomID(5);
   const nav = html.querySelector(".fatex-tabs-navigation"); //chekc this selector
   const body = html.querySelector(".fatex-js-tab-content"); //check this selector 
   if(!nav || !body) return;
@@ -71,9 +72,21 @@ const bountyImg = foundry.applications.fields.createFormGroup({
   input: foundry.applications.elements.HTMLFilePickerElement.create({
     name: "system.flags.bounty.img",
     type: "image",
-    value: app.object.system.flags?.bounty.img ?? "",
+    value: app.object.system.flags?.bounty.img ?? "icons/svg/mystery-man.svg",
   })
 }).outerHTML;
+
+const HueRotate = foundry.applications.fields.createFormGroup({
+    label: "Slider Label",
+    input: foundry.applications.elements.HTMLRangePickerElement.create({
+        name: "system.flags.bounty.hue",
+        min: 1,
+        max: 360,
+        step: 1,
+        value: app.object.system.flags?.bounty.hue ?? "0",
+    })
+}).outerHTML;
+
 
 
 
@@ -83,15 +96,32 @@ let statProse= foundry.applications.elements.HTMLProseMirrorElement.create({name
 <p><strong>Target:</strong> <br><strong>Last Known Location:</strong> </p>
 <p><strong>Wanted For:</strong> <br><strong>Objective:</strong> </p>`});
 let detailsProse= foundry.applications.elements.HTMLProseMirrorElement.create({name:"system.flags.bounty.details",toggled: true,value: app.object.system.flags?.bounty.details ?? "", enriched:app.object.system.flags?.bounty.details ?? ""});
+let imgPreview = app.object.system.flags?.bounty.img ?? "icons/svg/mystery-man.svg";
 
+let imgBlock = `<h2>Bounty Image</h2><div>${bountyImg}
+<br>
+${HueRotate}
+<br>
+<img src="${imgPreview}" class="bounty_preview-${randID}" style="filter: hue-rotate(${app.object.system.flags?.bounty.hue}deg)" height="100">
+</div>`;
+let statBlock = `<h2>Bounty Stats</h2><div> ${statProse.outerHTML}</div>`;
+let detailsBlock = `<h2>Bounty Details</h2> <div>${detailsProse.outerHTML}</div>`;
 
   body.insertAdjacentHTML('beforeend', `
     <div data-tab="bounty" class="fatex-tab-content fatex-tab-content--bounty tab">
-       <h2>Bounty Image</h2><div>${bountyImg}</div>
-       <h2>Bounty Stats</h2><div> ${statProse.outerHTML}</div>
-       <h2>Bounty Details</h2> <div>${detailsProse.outerHTML}</div>
+      ${imgBlock}
+      ${statBlock}
+      ${detailsBlock}
     </div>
   `);
+
+  const slider = body.querySelector('[name="system.flags.bounty.hue"]');
+  slider?.addEventListener('input', ev => {
+    const val = ev.target.value;
+    const img = body.querySelector('img.bounty_preview-' +randID);
+     img.style.filter = `hue-rotate(${val}deg)`;
+  });
+
 });
 
     async function displayPad(options={}) {
